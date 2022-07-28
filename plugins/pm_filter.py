@@ -9,7 +9,7 @@ import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
 from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
-    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE
+    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE, UNAUTHORIZED_CALLBACK_TEXT
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -451,10 +451,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             alert = alert.replace("\\n", "\n").replace("\\t", "\t")
             await query.answer(alert, show_alert=True)
     if query.data.startswith("file"):
-        ident, file_id = query.data.split("#")
+        ident, file_id, rid = query.data.split("#")
+
+        if int(rid) not in [query.from_user.id, 0]:
+            return await query.answer(UNAUTHORIZED_CALLBACK_TEXT, show_alert=True)
+
         files_ = await get_file_details(file_id)
         if not files_:
-            return await query.answer('No such file exist.')
+            return await query.answer('Request Again In Group')#After joining the forecesub (Refreshing) 
         files = files_[0]
         title = files.file_name
         size = get_size(files.file_size)
@@ -496,7 +500,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 )
                 await query.answer('𝐁𝐑𝐎 𝐂𝐇𝐄𝐂𝐊 𝐘𝐎𝐔𝐑 𝐏𝐌 𝐈 𝐇𝐀𝐕𝐄 𝐒𝐄𝐍𝐓 𝐅𝐈𝐋𝐄𝐒 𝐓𝐇𝐄𝐑𝐄 😉', show_alert=True)
         except UserIsBlocked:
-            await query.answer('Unblock the bot mahn 😑!', show_alert=True)
+            await query.answer('Unblock the bot man ! 🤬🤬!', show_alert=True)
         except PeerIdInvalid:
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
         except Exception as e:
@@ -505,7 +509,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
             await query.answer("I Like Your Smartness, But Don't Try To Be Oversmart 😒", show_alert=True)
             return
-        ident, file_id = query.data.split("#")
+        ident, file_id, rid = query.data.split("#")
+
+        if int(rid) not in [query.from_user.id, 0]:
+            return await query.answer(UNAUTHORIZED_CALLBACK_TEXT, show_alert=True)
+
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('No such file exist.')
