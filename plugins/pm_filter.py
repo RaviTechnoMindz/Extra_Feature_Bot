@@ -9,7 +9,7 @@ import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
 from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
-    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE, UNAUTHORIZED_CALLBACK_TEXT
+    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -86,13 +86,13 @@ async def fil_mod(client, message):
          args = message.text.split(None, 1)[1].lower() 
       except: 
          return await message.reply("**𝙸𝙽𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴 𝙲𝙾𝙼𝙼𝙰𝙽𝙳...**")
-      
+
       m = await message.reply("**𝚂𝙴𝚃𝚃𝙸𝙽𝙶.../**")
 
       if args in mode_on:
           FILTER_MODE[str(message.chat.id)] = "True" 
           await m.edit("**𝙰𝚄𝚃𝙾𝙵𝙸𝙻𝚃𝙴𝚁 𝙴𝙽𝙰𝙱𝙻𝙴𝙳**")
-      
+
       elif args in mode_of:
           FILTER_MODE[str(message.chat.id)] = "False"
           await m.edit("**𝙰𝚄𝚃𝙾𝙵𝙸𝙻𝚃𝙴𝚁 𝙳𝙸𝚂𝙰𝙱𝙻𝙴𝙳**")
@@ -451,14 +451,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
             alert = alert.replace("\\n", "\n").replace("\\t", "\t")
             await query.answer(alert, show_alert=True)
     if query.data.startswith("file"):
-        ident, file_id, rid = query.data.split("#")
-
-        if int(rid) not in [query.from_user.id, 0]:
-            return await query.answer(UNAUTHORIZED_CALLBACK_TEXT, show_alert=True)
-
+        ident, file_id = query.data.split("#")
         files_ = await get_file_details(file_id)
         if not files_:
-            return await query.answer('Request Again In Group')#After joining the forecesub (Refreshing) 
+            return await query.answer('No such file exist.')
         files = files_[0]
         title = files.file_name
         size = get_size(files.file_size)
@@ -507,13 +503,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
-            await query.answer("I Like Your Smartness, But Don't Try To Be Oversmart 😒", show_alert=True)
+            await query.answer("I Like Your Smartness, But Don't Try To Be Oversmart 😒\nJoin @TmMainChannel And Click On Try Again", show_alert=True)
             return
-        ident, file_id, rid = query.data.split("#")
-
-        if int(rid) not in [query.from_user.id, 0]:
-            return await query.answer(UNAUTHORIZED_CALLBACK_TEXT, show_alert=True)
-
+        ident, file_id = query.data.split("#")
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('No such file exist.')
@@ -806,7 +798,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.START_TXT.format(query.from_user.mention, temp.U_NAME, temp.B_NAME),
@@ -844,7 +836,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()        
         await query.message.edit_text(        
             text="Select your required mode from below!",
@@ -899,7 +891,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.HELP_TXT.format(query.from_user.mention),
@@ -954,7 +946,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.answer("𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗆𝗒 𝖧𝖾𝗅𝗉 𝗆𝗈𝖽𝗎𝗅𝖾")
         await query.message.edit_text(
@@ -985,7 +977,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.ABOUT_TXT.format(temp.B_NAME),
@@ -1002,7 +994,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.RESTRIC_TXT,
@@ -1020,7 +1012,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.IMAGE_TXT.format(temp.B_NAME),
@@ -1038,7 +1030,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.WHOIS_TXT,
@@ -1055,7 +1047,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.CORONA_TXT,
@@ -1073,7 +1065,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.URLSHORT_TXT,
@@ -1091,7 +1083,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.ZOMBIES_TXT,
@@ -1109,7 +1101,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.FUN_TXT,
@@ -1126,7 +1118,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.VIDEO_TXT,
@@ -1143,7 +1135,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.PIN_TXT,
@@ -1160,7 +1152,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.JSON_TXT,
@@ -1177,7 +1169,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.PASTE_TXT,
@@ -1194,7 +1186,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.PINGS_TXT,
@@ -1211,7 +1203,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.TTS_TXT,
@@ -1228,7 +1220,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.PURGE_TXT,
@@ -1245,7 +1237,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.TELE_TXT,
@@ -1262,7 +1254,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.SOURCE_TXT,
@@ -1280,7 +1272,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.MANUELFILTER_TXT,
@@ -1297,7 +1289,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.BUTTON_TXT,
@@ -1314,7 +1306,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.AUTOFILTER_TXT,
@@ -1331,7 +1323,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.CONNECTION_TXT,
@@ -1349,7 +1341,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.EXTRAMOD_TXT,
@@ -1367,7 +1359,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.GTRANS_TXT,
@@ -1385,7 +1377,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.REPORT_TXT,
@@ -1403,7 +1395,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.STICKER_TXT,
@@ -1421,7 +1413,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.YTTHUMB_TXT,
@@ -1439,7 +1431,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.ADMIN_TXT,
@@ -1456,7 +1448,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.ABOOK_TXT,
@@ -1474,7 +1466,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.FILE_TXT,
@@ -1491,7 +1483,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.SONG_TXT,
@@ -1508,7 +1500,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         await query.message.edit_text(
             text=script.DEPLOY_TXT,
@@ -1526,7 +1518,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         total = await Media.count_documents()
         users = await db.total_users_count()
@@ -1552,7 +1544,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         v=await a.edit('▣▣▣▣▢▢')
         i=await v.edit('▣▣▣▣▣▢')
         n=await i.edit('▣▣▣▣▣▣')
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await n.delete()
         total = await Media.count_documents()
         users = await db.total_users_count()
@@ -1647,7 +1639,7 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    text=f"♨️[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
                 ),
             ]
             for file in files
