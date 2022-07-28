@@ -19,16 +19,21 @@ logger = logging.getLogger(__name__)
 BATCH_FILES = {}
 
 @Client.on_message(filters.command("start") & filters.incoming & ~filters.edited)
-async def start(client, message):
+async def start(client, message: pyrogram.types.Message):
+
     if message.chat.type in ['group', 'supergroup']:
-        buttons = [
-            [
-                InlineKeyboardButton('🤖 Updates', url='https://t.me/Tmmainchannel')
-            ],
-            [
-                InlineKeyboardButton('ℹ️ Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
-            ]
-            ]
+        await message.reply_sticker(
+            'CAACAgUAAxkBAAEBHLhilcHI9LGFiorY11Cb41HiOT8XxgACbAYAAr4GsFT_LGNUHw4NliQE',
+            reply_markup=InlineKeyboardMarkup(
+                [[
+                    InlineKeyboardButton('★彡[ᴜᴘᴅᴀᴛᴇꜱ]彡★', url='https://t.me/Tmmainchannel')
+                ],
+                [
+                    InlineKeyboardButton('ℹ️ Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
+                ]]
+            )
+        )
+        
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply(script.START_TXT.format(message.from_user.mention if message.from_user else message.chat.title, temp.U_NAME, temp.B_NAME), reply_markup=reply_markup)
         await asyncio.sleep(2) # 😢 https://github.com/EvamariaTG/EvaMaria/blob/master/plugins/p_ttishow.py#L17 😬 wait a bit, before checking.
@@ -268,10 +273,11 @@ async def start(client, message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton('⭕☞𝗠𝗔𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟⭕', url="https://t.me/tmmainchannel")
+                    InlineKeyboardButton('⭕☞𝙈𝘼𝙄𝙉 𝘾𝙃𝘼𝙉𝙉𝙀𝙇⭕', url="https://t.me/tmmainchannel")
                 ],
                 [
-                    InlineKeyboardButton('⭕☞𝗠𝗢𝗩𝗜𝗘𝗦 𝗚𝗥𝗢𝗨𝗣⭕', url="https://t.me/technomoviescollection")
+                    InlineKeyboardButton('⭕☞𝙈𝙊𝙑𝙄𝙀𝙎⭕', url="https://t.me/technomoviescollection"),
+                    InlineKeyboardButton('⭕☞𝘾𝙃𝘼𝙏𝙏𝙄𝙉𝙂⭕', url="https://t.me/Technomindzchat")
                 ],
                 [
                     InlineKeyboardButton('⭕☞𝐘𝐎𝐔𝐓𝐔𝐁𝐄⭕', url="https://www.youtube.com/c/TechnoMindz")
