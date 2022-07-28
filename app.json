@@ -108,6 +108,11 @@
             "value": "300",
             "required": false
         },
+        "UNAUTHORIZED_CALLBACK_TEXT":{
+            "description": "Text to show when unauthorized user tries to use bot. Defaults to 'oKda' (200 Char Limit).",
+            "value": "Check YOur Own Request Why Others 🤨",
+            "required": false
+        },
         "IMDB": {
             "description": "Imdb, the view of information when making True/False ",
             "required": false,
