@@ -70,7 +70,6 @@ async def start(client, message):
         m=await message.reply_sticker("CAACAgIAAxkBAALdtWKbQQeiW14ql5zd86zLUzJO_HCVAAKHFQACPQ9QSd6bZv3Wx6O_HgQ") 
         await asyncio.sleep(2)
         await m.delete()
-        await message.reply_chat_action("typing")
         await message.reply_video(
             video=random.choice(PICS),
             caption=script.START_TXT.format(message.from_user.mention, temp.U_NAME, temp.B_NAME),
