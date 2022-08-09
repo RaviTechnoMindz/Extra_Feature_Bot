@@ -17,28 +17,28 @@ lock = asyncio.Lock()
 async def index_files(bot, query):
     if query.data.startswith('index_cancel'):
         temp.CANCEL = True
-        return await query.answer("Stopping Indexing😉")
+        return await query.answer("Stopping Indexing 👍")
     _, raju, chat, lst_msg_id, from_user = query.data.split("#")
     if raju == 'reject':
         await query.message.delete()
         await bot.send_message(int(from_user),
-                               f'Your Submission for indexing {chat} has been decliened by our moderators.',
+                               f'Your Submission for indexing {chat} has been decliened by our moderators.\nContact Support @TechnoMindzChat.',
                                reply_to_message_id=int(lst_msg_id))
         return
 
     if lock.locked():
-        return await query.answer('Wait Let me Finish the first one', show_alert=True)
+        return await query.answer('Wait Let Me Finish The First One 🥴.', show_alert=True)
     msg = query.message
 
     await query.answer('Processing...⏳', show_alert=True)
     if int(from_user) not in ADMINS:
         await bot.send_message(int(from_user),
-                               f'Your Submission for indexing {chat} has been accepted by our moderators and will be added soon.',
+                               f'Your Submission for indexing {chat} has been accepted by our moderators😀 and will be added soon.✔️',
                                reply_to_message_id=int(lst_msg_id))
     await msg.edit(
-        "Indexing Started 🤖...",
+        "Indexing Started 🤖",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton('⛔STOP⛔', callback_data='index_cancel')]]
+            [[InlineKeyboardButton('Cancel', callback_data='index_cancel')]]
         )
     )
     try:
@@ -99,16 +99,16 @@ async def send_for_index(bot, message):
         try:
             link = (await bot.create_chat_invite_link(chat_id)).invite_link
         except ChatAdminRequired:
-            return await message.reply('Make sure iam an admin in the chat and have permission to invite users.🥲')
+            return await message.reply('Make sure iam an admin in the chat and have permission to invite users.')
     else:
         link = f"@{message.forward_from_chat.username}"
     buttons = [
         [
-            InlineKeyboardButton('ACCEPT INDEX✔️',
+            InlineKeyboardButton('Accept Index',
                                  callback_data=f'index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}')
         ],
         [
-            InlineKeyboardButton('REJECT INDEX❌',
+            InlineKeyboardButton('Reject Index',
                                  callback_data=f'index#reject#{chat_id}#{message.id}#{message.from_user.id}'),
         ]
     ]
@@ -127,10 +127,10 @@ async def set_skip_number(bot, message):
             skip = int(skip)
         except:
             return await message.reply("Skip number should be an integer.")
-        await message.reply(f"Successfully set SKIP number as {skip} 😉")
+        await message.reply(f"Succesfully set SKIP number as {skip}")
         temp.CURRENT = int(skip)
     else:
-        await message.reply("Give me a skip number 👀")
+        await message.reply("Give me a skip number")
 
 
 async def index_files_to_db(lst_msg_id, chat, msg, bot):
@@ -139,9 +139,9 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot):
     errors = 0
     deleted = 0
     no_media = 0
-    unsupported = 0
     async with lock:
         try:
+            total = lst_msg_id + 1
             current = temp.CURRENT
             temp.CANCEL = False
             while current < total:
@@ -161,12 +161,12 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot):
                     logger.exception(e)
                 try:
                     for file_type in ("document", "video", "audio"):
-                        media = getattr(message, file_type, None)
+                        media = getattr(message, message.media.value, None)
                         if media is not None:
                             break
                         else:
                             continue
-                    media.file_type = file_type
+                    media.file_type = message.media.value
                     media.caption = message.caption
                     aynav, vnay = await save_file(media)
                     if aynav:
@@ -189,32 +189,10 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot):
                     can = [[InlineKeyboardButton('Cancel', callback_data='index_cancel')]]
                     reply = InlineKeyboardMarkup(can)
                     await msg.edit_text(
-                        text=f"Total messages fetched: <code>{current}</code>\nTotal messages saved: <code>{total_files}</code>\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>",
+                        text=f"Total messages fetched: <code>{current}</code>\nTotal messages saved: <code>{total_files}</code>\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media}</code>\nErrors Occured: <code>{errors}</code>",
                         reply_markup=reply)
-                if message.empty:
-                    deleted += 1
-                    continue
-                elif not message.media:
-                    no_media += 1
-                    continue
-                elif message.media not in [enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.DOCUMENT]:
-                    unsupported += 1
-                    continue
-                media = getattr(message, message.media.value, None)
-                if not media:
-                    unsupported += 1
-                    continue
-                media.file_type = message.media.value
-                media.caption = message.caption
-                aynav, vnay = await save_file(media)
-                if aynav:
-                    total_files += 1
-                elif vnay == 0:
-                    duplicate += 1
-                elif vnay == 2:
-                    errors += 1
         except Exception as e:
             logger.exception(e)
             await msg.edit(f'Error: {e}')
         else:
-            await msg.edit(f'Succesfully saved <code>{total_files}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>')
+            await msg.edit(f'Succesfully saved <code>{total_files}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media}</code>\nErrors Occured: <code>{errors}</code>')
