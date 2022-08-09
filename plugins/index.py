@@ -160,7 +160,7 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot):
                 except Exception as e:
                     logger.exception(e)
                 try:
-                    for file_type in ("document", "video", "audio"):
+                    for file_type in (enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.DOCUMENT):
                         media = getattr(message, message.media.value, None)
                         if media is not None:
                             break
