@@ -1727,7 +1727,7 @@ async def auto_filter(client, msg, spoll=False):
                 chat_id=message.chat.id,
                 video="https://telegra.ph/file/0cddf1c687a0dbc256313.mp4",
                 caption=f"⚙️ Fɪʟᴛᴇʀ Fᴏʀ <code>{search}</code> \nBʏ <spoiler>{message.from_user.mention}</spoiler> \nIs Now Cʟᴏꜱᴇᴅ 🗑️\n\n@TmMainChannel",
-                reply_to_message_id=message.message_id
+                reply_to_message_id=message.message.id
             )
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
             pic = imdb.get('poster')
@@ -1739,7 +1739,7 @@ async def auto_filter(client, msg, spoll=False):
                 chat_id=message.chat.id,
                 video="https://telegra.ph/file/0cddf1c687a0dbc256313.mp4",
                 caption=f"⚙️ Fɪʟᴛᴇʀ Fᴏʀ <code>{search}</code> \nBʏ <spoiler>{message.from_user.mention}</spoiler> \nIs Now Cʟᴏꜱᴇᴅ 🗑️\n\n@TmMainChannel",
-                reply_to_message_id=message.message_id
+                reply_to_message_id=message.message.id
             )
         except Exception as e:
             logger.exception(e)
@@ -1750,7 +1750,7 @@ async def auto_filter(client, msg, spoll=False):
                 chat_id=message.chat.id,
                 video="https://telegra.ph/file/0cddf1c687a0dbc256313.mp4",
                 caption=f"⚙️ Fɪʟᴛᴇʀ Fᴏʀ <code>{search}</code> \nBʏ <spoiler>{message.from_user.mention}</spoiler> \nIs Now Cʟᴏꜱᴇᴅ 🗑️\n\n@TmMainChannel",
-                reply_to_message_id=message.message_id
+                reply_to_message_id=message.message.id
             )
     else:
         fuk = await message.reply_text(text=cap, disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(btn))
@@ -1760,7 +1760,7 @@ async def auto_filter(client, msg, spoll=False):
             chat_id=message.chat.id,
             video="https://telegra.ph/file/0cddf1c687a0dbc256313.mp4",
             caption=f"⚙️ Fɪʟᴛᴇʀ Fᴏʀ <code>{search}</code> \nBʏ <spoiler>{message.from_user.mention}</spoiler> \nIs Now Cʟᴏꜱᴇᴅ 🗑️\n\n@TmMainChannel",
-            reply_to_message_id=message.message_id
+            reply_to_message_id=message.message.id
         )
     if spoll:
         await msg.message.delete()
