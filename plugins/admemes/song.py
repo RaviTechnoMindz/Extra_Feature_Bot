@@ -21,7 +21,7 @@ from yt_dlp.utils import (
 )
 
 
-@Client.on_message(filters.command("song") & ~filters.edited)
+@Client.on_message(filters.command("song"))
 async def song(client, message):
     cap = '**💥 Søɳʛ 🎸 Uƥɭøɗɘɗ 💿 Ɓy✌\n🔊 [𝕋𝕖𝕔𝕙𝕟𝕠 𝕄𝕚𝕟𝕕𝕫 💞 ṀṳṠḭḉ](https://t.me/technomindzchat) 🌷 ...**'
     url = message.text.split(None, 1)[1]
